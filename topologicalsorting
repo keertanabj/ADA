@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+void topologicalsorting(int n, int w[][n]) {
+    int indegree[n];
+    for (int j = 0; j < n; j++) {
+        indegree[j] = 0;
+        for (int i = 0; i < n; i++) {
+            if (w[i][j] == 1)
+                indegree[j]++;
+        }
+    }
+
+    printf("Topological sorting: ");
+
+    int count = 0;
+    while (count < n) {
+        int found = 0;
+        for (int i = 0; i < n; i++) {
+            if (indegree[i] == 0) {
+                printf("%d -> ", i + 1);
+                indegree[i] = -1;
+                count++;
+                found = 1;
+
+                for (int j = 0; j < n; j++) {
+                    if (w[i][j] == 1) {
+                        w[i][j] = 0;
+                        indegree[j]--;
+                    }
+                }
+                break;
+            }
+        }
+        if (!found) {
+            printf("\nCycle detected. Topological sort not possible.\n");
+            return;
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+
+    int w[n][n];
+    printf("Enter adjacency matrix:\n");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+
+            scanf("%d", &w[i][j]);
+        }
+    }
+
+    topologicalsorting(n, w);
+    return 0;
+}
+
