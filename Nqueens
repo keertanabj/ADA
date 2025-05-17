@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_N 20  // Maximum size of the board (adjust as needed)
+
+// Function to check if placing a queen at (row, col) is safe
+bool is_safe(int board[], int row, int col) {
+    for (int i = 0; i < row; i++) {
+        // Check if the column is the same or diagonals are attacked
+        if (board[i] == col || board[i] - i == col - row || board[i] + i == col + row) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Backtracking function to find all solutions
+void solve_n_queens(int board[], int row, int N) {
+    // If all queens are placed, print the board
+    if (row == N) {
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (board[i] == j) {
+                    printf("Q ");
+                } else {
+                    printf(". ");
+                }
+            }
+            printf("\n");
+        }
+        printf("\n");
+        return;
+    }
+
+    // Try placing a queen in all columns of the current row
+    for (int col = 0; col < N; col++) {
+        if (is_safe(board, row, col)) {
+            board[row] = col;  // Place the queen
+            solve_n_queens(board, row + 1, N);  // Recur for the next row
+            board[row] = -1;  // Backtrack
+        }
+    }
+}
+
+// Function to start solving the N-Queens problem
+void n_queens(int N) {
+    int board[MAX_N];
+
+    // Initialize the board (all queens placed at -1 initially)
+    for (int i = 0; i < N; i++) {
+        board[i] = -1;
+    }
+
+    // Start solving from the first row
+    solve_n_queens(board, 0, N);
+}
+
+// Main function to drive the program
+int main() {
+    int N;
+    printf("Enter the value of N: ");
+    scanf("%d", &N);
+
+    if (N < 1 || N > MAX_N) {
+        printf("N should be between 1 and %d\n", MAX_N);
+        return 1;
+    }
+
+    printf("Solutions for the %d-Queens problem:\n", N);
+    n_queens(N);
+
+    return 0;
+}
