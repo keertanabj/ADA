@@ -1,0 +1,11 @@
+int countRangeSum(int* nums, int numsSize, int lower, int upper) {
+    int s, count =0;
+    for(int i=0; i<numsSize; i++){
+        s=0;
+        for(int j=i; j<numsSize; j++){
+            s+=nums[j];
+            if (s<=upper && s>=lower) count++;
+        }
+    }
+    return count;
+}
