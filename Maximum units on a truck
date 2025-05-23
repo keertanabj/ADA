@@ -1,0 +1,40 @@
+import java.util.*;
+
+public class Solution {
+    public int maximumUnits(int[][] boxTypes, int truckSize) {
+        // Step 1: Sort box types based on the number of units per box in descending order
+        Arrays.sort(boxTypes, (a, b) -> b[1] - a[1]);
+
+        int totalUnits = 0;
+        int remainingSpace = truckSize;
+
+        // Step 2: Try to take as many boxes as possible starting from the one with the highest units per box
+        for (int[] boxType : boxTypes) {
+            int numberOfBoxes = boxType[0];
+            int unitsPerBox = boxType[1];
+
+            // Take the minimum between the remaining space on the truck and the number of boxes available
+            int boxesToTake = Math.min(remainingSpace, numberOfBoxes);
+
+            // Add the units for the boxes taken
+            totalUnits += boxesToTake * unitsPerBox;
+
+            // Decrease the remaining space on the truck
+            remainingSpace -= boxesToTake;
+
+            // If the truck is full, break the loop
+            if (remainingSpace == 0) {
+                break;
+            }
+        }
+
+        return totalUnits;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        
+        // Call the maximumUnits method with appropriate parameters when needed
+        // Example: solution.maximumUnits(boxTypes, truckSize);
+    }
+}
