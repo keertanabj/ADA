@@ -1,0 +1,32 @@
+nt calPoints(char** operations, int operationsSize) {
+    int *stack = (int*)malloc(sizeof(int) * operationsSize); 
+    int stackTop = 0; 
+    int sum = 0; 
+
+    for (int i = 0; i < operationsSize; i++) {
+        char *op = operations[i];
+        
+        if (op[0] == 'C') {
+            
+            stackTop--;
+        } else if (op[0] == 'D') {
+            
+            stack[stackTop] = 2 * stack[stackTop - 1];
+            stackTop++;
+        } else if (op[0] == '+') {
+            
+            stack[stackTop] = stack[stackTop - 1] + stack[stackTop - 2];
+            stackTop++;
+        } else {
+            
+            stack[stackTop] = atoi(op);
+            stackTop++;
+        }
+    }
+    for (int i = 0; i < stackTop; i++) {
+        sum += stack[i];
+    }
+
+    free(stack); 
+    return sum;
+}
